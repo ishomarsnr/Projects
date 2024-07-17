@@ -13,14 +13,55 @@
     <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="css/styles.css" rel="stylesheet" />
+    <link href="css/decision_tree_styles.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #f0f8ff;
+            color: #333;
+        }
+        .resume-section {
+            padding: 5rem 0;
+        }
+        .resume-section-content {
+            max-width: 900px;
+            margin: auto;
+        }
+        h1 {
+            color: #2e8b57;
+        }
+        h2 {
+            color: #1e90ff;
+        }
+        p.lead {
+            color: #4682b4;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        code {
+            color: #2e8b57;
+        }
+        .project-title {
+            background-color: #1e90ff;
+            color: #fff;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+        }
+    </style>
 </head>
 <body id="page-top">
     <div class="container-fluid p-0">
         <!-- Content-->
         <section class="resume-section" id="about">
             <div class="resume-section-content">
-                <h1 class="mb-0">
+                <h1 class="mb-0 project-title">
                     Decision Tree Application
                     <span class="text-primary">for Phishing Detection</span>
                 </h1>
@@ -33,7 +74,6 @@
                     I generated a simulated dataset to include features commonly associated with phishing attempts, such as URL length, use of IP address, presence of HTTPS token, age of domain, and having a subdomain.
                 </p>
                 <pre><code>
-# Generate a simulated dataset for phishing detection
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -42,6 +82,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.tree import plot_tree
 import matplotlib.pyplot as plt
 
+# Generate a simulated dataset for phishing detection
 np.random.seed(42)
 data_size = 1000
 url_length = np.random.choice([-1, 0, 1], data_size)
@@ -90,10 +131,10 @@ clf.fit(X_train, y_train)
 
 plt.figure(figsize=(20,10))
 plot_tree(clf, filled=True, feature_names=X.columns.tolist(), class_names=['Legitimate', 'Phishing'], rounded=True, fontsize=14)
-plt.savefig('assets/img/decision_tree.png')
+plt.savefig('assets/img/decision_tree_phishing.png')
 plt.show()
                 </code></pre>
-                <img src="assets/img/decision_tree.png" alt="Decision Tree Visualization" style="width:100%;height:auto;" />
+                <img src="assets/img/decision_tree_phishing.png" alt="Decision Tree Visualization" style="width:100%;height:auto;" />
                 <h2>Conclusion</h2>
                 <p class="lead mb-5">
                     The Decision Tree visualization shows how decisions are made based on the features. Each node represents a decision point where the dataset is split based on a feature's value, and the branches represent the outcome of that decision.

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="SQL Filters and Linux File Permissions Projects" />
+    <meta name="author" content="Ishmael Omar Mohammed" />
+    <title>SQL Filters and Linux File Permissions Projects</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
+</head>
+<body id="page-top">
+    <div class="container-fluid p-0">
+        <!-- Content-->
+        <section class="resume-section" id="about">
+            <div class="resume-section-content">
+                <h1 class="mb-0">
+                    SQL Filters and Linux
+                    <span class="text-primary">File Permissions</span>
+                </h1>
+                <h2>Introduction</h2>
+                <p class="lead mb-5">
+                    As part of my Google Cybersecurity course, I worked on projects to enhance the security of an organization's system by investigating potential security issues and updating file permissions. This involved using SQL queries with filters and Linux commands to retrieve specific information and set appropriate permissions.
+                </p>
+                
+                <!-- SQL Queries Section -->
+                <h2>Applying Filters to SQL Queries</h2>
+                <h3>Retrieve After Hours Failed Login Attempts</h3>
+                <p class="lead mb-5">
+                    To investigate a potential security incident that occurred after business hours (after 18:00), I created a SQL query to filter for failed login attempts that occurred after business hours.
+                </p>
+                <pre><code>
+-- Retrieve after hours failed login attempts
+SELECT *
+FROM log_in_attempts
+WHERE login_time > '18:00'
+  AND success = FALSE;
+                </code></pre>
+                <h3>Retrieve Login Attempts on Specific Dates</h3>
+                <p class="lead mb-5">
+                    To investigate a suspicious event that occurred on 2022-05-09, I created a SQL query to filter for login attempts that occurred on 2022-05-09 or on the day before.
+                </p>
+                <pre><code>
+-- Retrieve login attempts on specific dates
+SELECT *
+FROM log_in_attempts
+WHERE login_date = '2022-05-09'
+   OR login_date = '2022-05-08';
+                </code></pre>
+                <h3>Retrieve Login Attempts Outside of Mexico</h3>
+                <p class="lead mb-5">
+                    To investigate login attempts that occurred outside of Mexico, I created a SQL query to filter for login attempts that occurred in countries other than Mexico.
+                </p>
+                <pre><code>
+-- Retrieve login attempts outside of Mexico
+SELECT *
+FROM log_in_attempts
+WHERE country NOT LIKE 'MEX%';
+                </code></pre>
+                <h3>Retrieve Employees in Marketing</h3>
+                <p class="lead mb-5">
+                    To update the computers for employees in the Marketing department in the East building, I created a SQL query to filter for these employees.
+                </p>
+                <pre><code>
+-- Retrieve employees in Marketing
+SELECT *
+FROM employees
+WHERE department = 'Marketing'
+  AND office LIKE 'East%';
+                </code></pre>
+                <h3>Retrieve Employees in Finance or Sales</h3>
+                <p class="lead mb-5">
+                    To update the computers for employees in the Finance and Sales departments, I created a SQL query to filter for these employees.
+                </p>
+                <pre><code>
+-- Retrieve employees in Finance or Sales
+SELECT *
+FROM employees
+WHERE department = 'Finance'
+   OR department = 'Sales';
+                </code></pre>
+                <h3>Retrieve All Employees Not in IT</h3>
+                <p class="lead mb-5">
+                    To update the computers for employees who are not in the Information Technology department, I created a SQL query to filter for these employees.
+                </p>
+                <pre><code>
+-- Retrieve all employees not in IT
+SELECT *
+FROM employees
+WHERE department != 'Information Technology';
+                </code></pre>
+
+                <!-- Linux File Permissions Section -->
+                <h2>File Permissions in Linux</h2>
+                <h3>Check File and Directory Details</h3>
+                <p class="lead mb-5">
+                    To determine the existing permissions set for a specific directory in the file system, I used the `ls -la` command.
+                </p>
+                <pre><code>
+# Check file and directory details
+ls -la /path/to/projects
+                </code></pre>
+                <p>Output:</p>
+                <img src="assets/img/permissions_check.png" alt="Permissions Check" style="width:100%;height:auto;" />
+
+                <h3>Describe the Permissions String</h3>
+                <p class="lead mb-5">
+                    The 10-character string represents the permissions set on each file or directory. It can be deconstructed to determine who is authorized to access the file and their specific permissions.
+                </p>
+                <pre><code>
+-rw-rw-r--
+^ ^  ^  ^ 
+| |  |  |
+| |  |  └── Others (read-only)
+| |  └──── Group (read/write)
+| └─────── User (read/write)
+└───────── File type (regular file)
+                </code></pre>
+
+                <h3>Change File Permissions</h3>
+                <p class="lead mb-5">
+                    To remove write permissions for others from the `project_k.txt` file, I used the `chmod` command.
+                </p>
+                <pre><code>
+# Remove write permissions for others
+chmod o-w project_k.txt
+ls -la project_k.txt
+                </code></pre>
+                <p>Output:</p>
+                <img src="assets/img/change_permissions.png" alt="Change Permissions" style="width:100%;height:auto;" />
+
+                <h3>Change File Permissions on a Hidden File</h3>
+                <p class="lead mb-5">
+                    To remove write permissions from the user and group and add read permissions to the group for the hidden file `.project_x.txt`, I used the `chmod` command.
+                </p>
+                <pre><code>
+# Change permissions on a hidden file
+chmod u-w .project_x.txt
+chmod g-w .project_x.txt
+chmod g+r .project_x.txt
+ls -la .project_x.txt
+                </code></pre>
+                <p>Output:</p>
+                <img src="assets/img/change_hidden_file_permissions.png" alt="Change Hidden File Permissions" style="width:100%;height:auto;" />
+
+                <h3>Change Directory Permissions</h3>
+                <p class="lead mb-5">
+                    To ensure that only the `researcher2` user has access to the `drafts` directory and its contents, I used the `chmod` command to remove execute permissions from the group.
+                </p>
+                <pre><code>
+# Change directory permissions
+chmod g-x drafts
+ls -la drafts
+                </code></pre>
+                <p>Output:</p>
+                <img src="assets/img/change_directory_permissions.png" alt="Change Directory Permissions" style="width:100%;height:auto;" />
+
+                <h2>Summary</h2>
+                <p class="lead mb-5">
+                    In these projects, I applied filters to SQL queries to retrieve specific information on login attempts and employee machines, and used Linux commands to set appropriate file and directory permissions. These tasks were essential in enhancing the security of the organization's system.
+                </p>
+            </div>
+        </section>
+    </div>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+</body>
+</html>

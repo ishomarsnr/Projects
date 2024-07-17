@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="DDOS Detection Using Decision Tree Classifier" />
+    <meta name="author" content="Ishmael Omar Mohammed" />
+    <title>DDOS Detection Using Decision Tree Classifier</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/ddos_styles.css" rel="stylesheet" />
+    <style>
+        body {
+            background-color: #f0f8ff;
+            color: #333;
+        }
+        .resume-section {
+            padding: 5rem 0;
+        }
+        .resume-section-content {
+            max-width: 900px;
+            margin: auto;
+        }
+        h1 {
+            color: #2e8b57;
+        }
+        h2 {
+            color: #1e90ff;
+        }
+        p.lead {
+            color: #4682b4;
+        }
+        pre {
+            background-color: #e6f2ff;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        code {
+            color: #2e8b57;
+        }
+        .project-title {
+            background-color: #1e90ff;
+            color: #fff;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+<body id="page-top">
+    <div class="container-fluid p-0">
+        <!-- Content-->
+        <section class="resume-section" id="about">
+            <div class="resume-section-content">
+                <h1 class="mb-0 project-title">
+                    DDOS Detection
+                    <span class="text-primary">Using Decision Tree Classifier</span>
+                </h1>
+                <h2>Introduction</h2>
+                <p class="lead mb-5">
+                    Distributed Denial of Service (DDOS) attacks are a major cybersecurity threat where multiple systems flood the bandwidth or resources of a targeted system, usually one or more web servers. In this project, I trained several versions of a Decision Tree classifier with varying `max_depth` parameters to identify the optimal model for DDOS detection.
+                </p>
+                <h2>Data Preparation</h2>
+                <p class="lead mb-5">
+                    The dataset used for this project is a cleaned version of a DDOS dataset. The features are used to train the model while the label indicates whether the traffic is benign or a DDOS attack.
+                </p>
+                <pre><code>
+import pandas as pd
+from sklearn.model_selection import cross_val_score, StratifiedKFold
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import make_scorer, accuracy_score, precision_score, recall_score
+
+# Load the dataset
+file_path = 'ddos_cleaned.csv'
+data = pd.read_csv(file_path)
+
+# Prepare the data
+X = data.drop(['label', 'Unnamed: 0'], axis=1)  # Adjust based on your dataset's columns
+y = data['label']
+
+# Define cross-validation
+cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
+
+# Define the max_depth values to evaluate
+max_depth_values = [1, 5, 10, 15, 20, 25]
+                </code></pre>
+                <h2>Model Training and Evaluation</h2>
+                <p class="lead mb-5">
+                    I trained several Decision Tree models with different `max_depth` values and evaluated their performance using 10-fold cross-validation to obtain the accuracy, precision, and recall.
+                </p>
+                <pre><code>
+# Initialize a dictionary to store the results
+results = {
+    'Max_depth': [],
+    'Accuracy': [],
+    'Precision': [],
+    'Recall': []
+}
+
+# Loop over each max_depth value
+for max_depth in max_depth_values:
+    model = DecisionTreeClassifier(max_depth=max_depth, random_state=42)
+    accuracy = cross_val_score(model, X, y, cv=cv, scoring=make_scorer(accuracy_score)).mean()
+    precision = cross_val_score(model, X, y, cv=cv, scoring=make_scorer(precision_score)).mean()
+    recall = cross_val_score(model, X, y, cv=cv, scoring=make_scorer(recall_score)).mean()
+    
+    # Append the results
+    results['Max_depth'].append(max_depth)
+    results['Accuracy'].append(accuracy)
+    results['Precision'].append(precision)
+    results['Recall'].append(recall)
+
+# Convert results to DataFrame
+results_df = pd.DataFrame(results)
+print(results_df)
+                </code></pre>
+                <img src="assets/img/ddos_results.png" alt="DDOS Results Table" style="width:100%;height:auto;" />
+                <h2>Optimal Model Selection</h2>
+                <p class="lead mb-5">
+                    Based on the results, I identified the optimal `max_depth` that gives the highest accuracy, precision, and recall.
+                </p>
+                <ul>
+                    <li><strong>Accuracy:</strong> 15</li>
+                    <li><strong>Precision:</strong> 15</li>
+                    <li><strong>Recall:</strong> 15</li>
+                </ul>
+                <h2>Model Saving</h2>
+                <p class="lead mb-5">
+                    Finally, I retrained the model with the optimal `max_depth` and saved the model for future use.
+                </p>
+                <pre><code>
+from joblib import dump
+
+# Retrain with the optimal max_depth
+optimal_model = DecisionTreeClassifier(max_depth=15, random_state=42)
+optimal_model.fit(X, y)
+
+# Save the model
+dump(optimal_model, 'optimal_decision_tree_model.joblib')
+                </code></pre>
+                <h2>Conclusion</h2>
+                <p class="lead mb-5">
+                    This project demonstrated the process of training and evaluating a Decision Tree classifier for DDOS detection. By varying the `max_depth` parameter and using cross-validation, I identified the optimal model that provides the highest accuracy, precision, and recall.
+                </p>
+            </div>
+        </section>
+    </div>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+</body>
+</html>
